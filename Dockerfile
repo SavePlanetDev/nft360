@@ -1,5 +1,5 @@
 FROM node:alpine
-WORKDIR /whos-hodl-database
+WORKDIR /api
 COPY package.json ./
 RUN npm install
 COPY . .

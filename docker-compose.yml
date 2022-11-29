@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  api:
+    build: ./api
+    ports:
+      - "3010:3003"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/code
+    links:
+      - "quizzical_ishizaka"

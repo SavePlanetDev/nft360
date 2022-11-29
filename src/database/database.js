@@ -8,7 +8,9 @@ const sequelize = new Sequelize(
   postgres_user,
   postgres_pwd,
   {
-    host: production === "PROD" ? "host.docker.internal" : "188.166.65.114",
+    host:
+      production === "PROD" ? "host.docker.internal" : "host.docker.internal",
+    // "188.166.65.114",
     port: postgres_port,
     dialect: "postgres",
     logging: false,
