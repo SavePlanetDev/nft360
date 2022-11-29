@@ -1,0 +1,879 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Whos-Hodl API",
+    "description": "Whos-Hodl Backend API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "paths": {
+    "/subscription/plan": {
+      "get": {
+        "tags": ["Plans"],
+        "summary": "Get all plans",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Plans"
+            }
+          }
+        }
+      }
+    },
+    "/subscription/plan/new": {
+      "post": {
+        "tags": ["Plans"],
+        "description": "create new plan",
+        "parameters": [
+          {
+            "name": "plan",
+            "description": "plan name",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/newPlan"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "new plan created",
+            "scheme": {
+              "$ref": "#/definitions/Plan"
+            }
+          }
+        }
+      }
+    },
+    "/subscription/plan/{planId}": {
+      "parameters": [
+        {
+          "name": "planId",
+          "in": "path",
+          "required": true,
+          "description": "plan ID",
+          "type": "integer"
+        }
+      ],
+      "get": {
+        "tags": ["Plans"],
+        "summary": "Get Plan by ID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Plan"
+            }
+          }
+        }
+      }
+    },
+    "/subscription/subscribe/": {
+      "get": {
+        "tags": ["Subscriptions"],
+        "summary": "Get subscriptions of all guild",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Subscriptions"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Subscriptions"],
+        "summary": "[MAIN] this api for user make subscription to the project",
+        "parameters": [
+          {
+            "name": "user subscription aggreagtes",
+            "in": "body",
+            "required": true,
+            "description": "user subscription data parameters",
+            "schema": {
+              "$ref": "#/definitions/UserSubscription"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseSubscription"
+            }
+          }
+        }
+      }
+    },
+    "/subscription/subscribe/guild/{discordGuildId}": {
+      "parameters": [
+        {
+          "name": "discordGuildId",
+          "required": true,
+          "in": "path",
+          "desctiption": "discord guild id of the nft server",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Subscriptions"],
+        "summary": "Guild subscription information",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Subscriptions"],
+        "summary": "update subscription plan",
+        "parameters": [
+          {
+            "name": "subscription",
+            "in": "body",
+            "description": "update subscription data",
+            "schema": {
+              "$ref": "#/definitions/UpdateSubscription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "updated subscription"
+          }
+        }
+      }
+    },
+    "/subscription/subscribe/owner/{ownerDiscordId}": {
+      "parameters": [
+        {
+          "name": "ownerDiscordId",
+          "in": "path",
+          "required": true,
+          "definition": "project owner discord Id",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Subscriptions"],
+        "summary:": "Subscriptions of disocrd Id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Subscriptions"
+            }
+          }
+        }
+      }
+    },
+    "/subscription/subscribe/new": {
+      "post": {
+        "tags": ["Subscriptions"],
+        "parameters": [
+          {
+            "name": "new subscription",
+            "in": "body",
+            "required": true,
+            "description": "add new subscription guild",
+            "schema": {
+              "$ref": "#/definitions/NewSubscription"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "new subscription created",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          }
+        }
+      }
+    },
+    "/project": {
+      "get": {
+        "tags": ["Projects"],
+        "summary": "list all projects",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/project/nft/{nftAddress}": {
+      "parameters": [
+        {
+          "name": "nftAddress",
+          "type": "string",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": ["Projects"],
+        "summary": "list one project",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/project/owner/{ownerDiscordId}": {
+      "parameters": [
+        {
+          "name": "ownerDiscordId",
+          "type": "string",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": ["Projects"],
+        "summary": "list all products owned by this discordId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/project/guild/{discordGuildId}": {
+      "parameters": [
+        {
+          "name": "discordGuildId",
+          "type": "string",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": ["Projects"],
+        "summary": "list one project",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/project/plan/{planId}": {
+      "parameters": [
+        {
+          "name": "planId",
+          "type": "string",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": ["Projects"],
+        "summary": "list all projects which has this plan",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/project/new": {
+      "post": {
+        "tags": ["Projects"],
+        "parameters": [
+          {
+            "name": "new project",
+            "in": "body",
+            "required": true,
+            "description": "add new subscription guild",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "new project created",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          }
+        }
+      }
+    },
+    "/holder": {
+      "get": {
+        "tags": ["Holders"],
+        "summary": "list all holders of all project",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Holder"
+            }
+          }
+        }
+      }
+    },
+    "/holder/verify": {
+      "post": {
+        "tags": ["Holders"],
+        "summary": "[MAIN] this api used for Holder of any project to verify their right",
+        "parameters": [
+          {
+            "name": "verification data",
+            "in": "body",
+            "required": true,
+            "description": "verification data model",
+            "schema": {
+              "$ref": "#/definitions/HolderVerification"
+            }
+          }
+        ],
+        "products": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/VerifiedHolder"
+            }
+          }
+        }
+      }
+    },
+    "/holder/{nftAddress}": {
+      "parameters": [
+        {
+          "name": "nftAddress",
+          "type": "string",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": ["Holders"],
+        "summary": "list all holders of {nftAddress}",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Holders"
+            }
+          }
+        }
+      }
+    },
+    "/holder/{nftAddress}/{discordId}": {
+      "parameters": [
+        {
+          "name": "nftAddress",
+          "in": "path",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "discordId",
+          "in": "path",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": ["Holders"],
+        "summary": "get holder of specific nft",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Holder"
+            }
+          }
+        }
+      }
+    },
+    "/holder/update/{nftAddress}/{discordId}": {
+      "parameters": [
+        {
+          "name": "nftAddress",
+          "in": "path",
+          "required": true,
+          "description": "nft smart contract address"
+        },
+        {
+          "name": "discordId",
+          "in": "path",
+          "required": true,
+          "description": "nft holder discord Id"
+        }
+      ],
+      "put": {
+        "tags": ["Holders"],
+        "summary": "update holder",
+        "parameters": [
+          {
+            "name": "holder",
+            "in": "body",
+            "required": true,
+            "description": "update holder data body",
+            "schema": {
+              "$ref": "#/definitions/Holder"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "updated holder"
+          }
+        }
+      }
+    },
+    "/holder/new": {
+      "parameters": [
+        {
+          "name": "new holder",
+          "in": "body",
+          "required": true,
+          "description": "add new holder of nft guild",
+          "schema": {
+            "$ref": "#/definitions/Holder"
+          }
+        }
+      ],
+      "post": {
+        "tags": ["Holders"],
+        "summary": "add new holder data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Holder"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "newPlan": {
+      "required": ["planName", "period", "price"],
+      "properties": {
+        "planName": {
+          "type": "string",
+          "definition": "plan name"
+        },
+        "price": {
+          "type": "integer",
+          "definition": "plan price in USD eg. 19"
+        },
+        "period": {
+          "type": "integer",
+          "definition": "plan period in days eg. 30"
+        },
+        "description": {
+          "type": "string",
+          "definition": "plan descriptions"
+        }
+      }
+    },
+    "Plan": {
+      "required": ["planId"],
+      "properties": {
+        "planId": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "planName": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Plans": {
+      "type": "array",
+      "$ref": "#/definitions/Plan"
+    },
+    "UserSubscription": {
+      "required": [
+        "planId",
+        "nftAddress",
+        "ownerDiscordId",
+        "discordGuildId",
+        "ownerWalletAddress",
+        "projectName",
+        "totalSupply",
+        "symbol",
+        "discordInviteLink",
+        "roleName"
+      ],
+      "properties": {
+        "nftAddress": {
+          "type": "string",
+          "uniqueItems": true,
+          "definition": "nft smart contract address"
+        },
+        "ownerDiscordId": {
+          "type": "string",
+          "definition": "owner discord id"
+        },
+        "discordGuildId": {
+          "type": "string",
+          "definition": "project discord id"
+        },
+        "ownerWalletAddress": {
+          "type": "string",
+          "definition": "owner wallet address [evm]"
+        },
+        "projectName": {
+          "type": "string",
+          "definition": "project name"
+        },
+        "totalSupply": {
+          "type": "string",
+          "definition": "nft total supply"
+        },
+        "symbol": {
+          "type": "string",
+          "definition": "nft symbol"
+        },
+        "website": {
+          "type": "string"
+        },
+        "facebook": {
+          "type": "string"
+        },
+        "twitter": {
+          "type": "string"
+        },
+        "discordInviteLink": {
+          "type": "string"
+        },
+        "etherscan": {
+          "type": "string"
+        },
+        "planId": {
+          "type": "string"
+        },
+        "roleName": {
+          "type": "string"
+        }
+      }
+    },
+    "NewSubscription": {
+      "required": [
+        "discordGuildId",
+        "ownerDiscordId",
+        "ownerWalletId",
+        "planId",
+        "start"
+      ],
+      "properties": {
+        "discordGuildId": { "type": "string", "uniqueItems": true },
+        "ownerDiscordId": { "type": "string" },
+        "ownerWallet": { "type": "string" },
+        "planId": { "type": "integer" },
+        "start": { "type": "integer" }
+      }
+    },
+    "Subscription": {
+      "required": ["discordGuildId"],
+      "properties": {
+        "discordGuildId": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "ownerDiscordId": {
+          "type": "string"
+        },
+        "ownerWallet": {
+          "type": "string"
+        },
+        "planId": {
+          "type": "integer"
+        },
+        "start": {
+          "type": "integer"
+        },
+        "end": {
+          "type": "integer"
+        },
+        "expired": {
+          "type": "boolean"
+        }
+      }
+    },
+    "UpdateSubscription": {
+      "required": [],
+      "properties": {
+        "ownerDiscordId": {
+          "type": "string"
+        },
+        "ownerWalletId": {
+          "type": "string"
+        },
+        "planId": {
+          "type": "integer"
+        },
+        "start": {
+          "type": "integer"
+        },
+        "end": {
+          "type": "integer"
+        },
+        "expired": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ResponseSubscription": {
+      "required": [],
+      "properties": {
+        "nftAddress": {
+          "type": "string",
+          "definition": "nft smart contract address",
+          "uniqueItems": "true"
+        },
+        "ownerDiscordId": {
+          "type": "string",
+          "definition": "project owner discord Id"
+        },
+        "discordGuildId": {
+          "type": "string",
+          "definition": "project discord id"
+        },
+        "ownerWalletAddress": {
+          "type": "string",
+          "definition": "project owner wallet address [evm]"
+        },
+        "projectName": {
+          "type": "string",
+          "definition": "nft project name"
+        },
+        "totalSupply": {
+          "type": "string",
+          "definition": "project total supply"
+        },
+        "symbol": {
+          "type": "string",
+          "definition": "nft project symbol"
+        },
+        "website": {
+          "type": "string",
+          "definition": "project website url"
+        },
+        "facebook": {
+          "type": "string",
+          "definition": "project facebook url"
+        },
+        "twitter": {
+          "type": "string",
+          "definition": "project twitter url"
+        },
+        "discordInviteLink": {
+          "type": "string",
+          "definition": "invitation link of project discord"
+        },
+        "etherscan": {
+          "type": "string",
+          "definition": "nft smart contract on block explorer url"
+        },
+        "start": {
+          "type": "string",
+          "definition": "project start of subscription timestamp [unix]"
+        },
+        "end": {
+          "type": "string",
+          "definition": "project end of subscription timestamp [unix]"
+        },
+        "planName": {
+          "type": "string",
+          "definition": "selected subscription plan name"
+        }
+      }
+    },
+    "Subscriptions": {
+      "type": "array",
+      "$ref": "#/definitions/Subscription"
+    },
+    "Project": {
+      "required": [],
+      "properties": {
+        "nftAddress": {
+          "type": "string",
+          "definition": "nft smart contract address",
+          "uniqueItems": true
+        },
+        "ownerDiscordId": {
+          "type": "string",
+          "definition": "project owner discord id"
+        },
+        "discordGuildId": {
+          "type": "string",
+          "definition": "guild discord id"
+        },
+        "ownerWalletAddress": {
+          "type": "string",
+          "definition": "project owner wallet address [evm]"
+        },
+        "projectName": {
+          "type": "string",
+          "definition": "nft project name"
+        },
+        "totalSupply": {
+          "type": "string",
+          "definition": "project total supply"
+        },
+        "symbol": {
+          "type": "string",
+          "definition": "nft project symbol"
+        },
+        "website": {
+          "type": "string",
+          "definition": "project website url"
+        },
+        "facebook": {
+          "type": "string",
+          "definition": "project facebook url"
+        },
+        "twitter": {
+          "type": "string",
+          "definition": "project twitter url"
+        },
+        "discordInviteLink": {
+          "type": "string",
+          "definition": "invitation link of project discord"
+        },
+        "etherscan": {
+          "type": "string",
+          "definition": "smart contract url on etherscan"
+        },
+        "planId": {
+          "type": "integer",
+          "definition": "plan id that this project is using"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "message": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Holder": {
+      "required": [],
+      "properties": {
+        "nftAddress": {
+          "type": "string",
+          "definition": "nft smart contract address"
+        },
+        "discordId": {
+          "type": "string",
+          "definition": "holder discord Id"
+        },
+        "walletAddress": {
+          "type": "string",
+          "definition": "holder wallet address [evm]"
+        },
+        "timestamp": {
+          "type": "integer",
+          "definition": "verified timestamp [unix]"
+        },
+        "verified": {
+          "type": "boolean",
+          "definition": "verification status"
+        }
+      }
+    },
+    "HolderVerification": {
+      "required": ["walletAddress", "discordId", "discordGuildId"],
+      "properties": {
+        "walletAddress": {
+          "type": "string"
+        },
+        "discordId": {
+          "type": "string"
+        },
+        "discordGuildId": {
+          "type": "string"
+        }
+      }
+    },
+    "Holders": {
+      "type": "array",
+      "$ref": "#/definitions/Holder"
+    },
+    "VerifiedHolder": {
+      "required": [],
+      "properties": {
+        "nftAddress": {
+          "type": "string",
+          "definition": "nft smart contract address"
+        },
+        "discordGuildId": {
+          "type": "string",
+          "definition": "guild discord id"
+        },
+        "discordId": {
+          "type": "string",
+          "definition": "nft holder discordId"
+        },
+        "balance": {
+          "type": "integer",
+          "definition": "balance of nft of holder"
+        },
+        "role": {
+          "type": "string",
+          "definition": "the role that gave to holder"
+        }
+      }
+    }
+  },
+  "host": "localhost:3003",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "API",
+      "description": "Whos-Hodl Backend API"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "products": ["application/json"]
+}
