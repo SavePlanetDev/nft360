@@ -7,7 +7,7 @@ const router = require("./routers/v1");
 const AppError = require("./utils/AppError");
 const GlobalErrorHandler = require("./controllers/error.controller");
 
-console.log("Database ENV: ", process.env.production);
+console.log("ENV: ", process.env.production);
 
 const swaggerUi = require("swagger-ui-express"),
   swaggerDocument = require(`${
@@ -23,6 +23,7 @@ const whitelist =
         "http://157.245.152.83:3002",
         "http://157.245.152.83:3000",
         "http://157.245.152.83:3003",
+        "http://157.245.152.83:3010",
       ]
     : [
         "http://localhost:3000",
@@ -54,6 +55,6 @@ app.all("*", (req, res, next) => {
 //GROBAL ERROR MIDDLEWERE
 app.use(GlobalErrorHandler);
 
-app.listen(port, () => console.log("DATABASE: conected on port: ", port));
+app.listen(port, () => console.log("NFT 360 API: conected on port: ", port));
 
 module.exports = app;

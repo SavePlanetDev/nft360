@@ -2,9 +2,9 @@ const database = require("./database");
 
 database
   .authenticate()
-  .then(() => console.log("authenticated"))
+  .then(() => console.log("Database: Authenticated"))
   .catch((e) => console.log(e));
 database
   .sync()
-  .then(() => console.log("DATABASE: Database Connected Successfully"))
+  .then(() => console.log("Database: Database Connected Successfully"))
   .catch((e) => console.log(e));
