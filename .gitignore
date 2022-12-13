@@ -1,4 +1,7 @@
 /node_modules
+/build
 *.env
+nft360-db.json
+
 
 .DS_Store

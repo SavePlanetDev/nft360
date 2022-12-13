@@ -1,10 +1,17 @@
 class AppError extends Error {
+  result: boolean;
+  statusCode: number;
+  status: string;
+  functionCall: any;
+  isOperational: boolean;
+  data: any;
+
   constructor(
-    message,
-    statusCode,
-    functionCall = null,
-    result = false,
-    data = null
+    message: string,
+    statusCode: number,
+    functionCall: any = null,
+    result: boolean = false,
+    data: any = null
   ) {
     super(message);
     this.result = result;
@@ -18,4 +25,4 @@ class AppError extends Error {
   }
 }
 
-module.exports = AppError;
+export default AppError;
